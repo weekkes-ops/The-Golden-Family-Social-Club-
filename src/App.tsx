@@ -10,6 +10,8 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Programs from "./components/Programs";
+import ImpactAnalytics from "./components/ImpactAnalytics";
+import MemberMilestones from "./components/MemberMilestones";
 import Events from "./components/Events";
 import Membership from "./components/Membership";
 import DonationGateway from "./components/DonationGateway";
@@ -109,7 +111,7 @@ export default function App() {
 
   // Synchronize Scroll Spy with Header Highlight
   useEffect(() => {
-    const sections = ["hero", "about", "programs", "events", "membership", "donate"];
+    const sections = ["hero", "about", "programs", "analytics", "milestones", "events", "membership", "donate"];
     const handleScrollSpy = () => {
       const scrollPosition = window.scrollY + 200;
 
@@ -157,6 +159,12 @@ export default function App() {
 
       {/* Key impact initiatives */}
       <Programs />
+
+      {/* Real-time Recharts Trends & Visualizations */}
+      <ImpactAnalytics />
+
+      {/* Historical Member Milestones Timeline */}
+      <MemberMilestones />
 
       {/* Dynamic Seat Bookings with state updates */}
       <Events
