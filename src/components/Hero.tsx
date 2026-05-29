@@ -68,9 +68,9 @@ export default function Hero({ onDonateNowClick, onBrowseMembershipClick }: Hero
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="max-w-2xl mx-auto text-sm sm:text-base text-gray-400 font-sans font-light leading-relaxed mb-12 uppercase tracking-wider"
+          className="max-w-3xl mx-auto text-xs sm:text-sm text-gray-300 font-sans font-light leading-relaxed mb-12 uppercase tracking-widest"
         >
-          The Golden Family Social Club is a prestigious society dedicated to intergenerational mentorship, high-intellect forums, civic charity, and elegant active recreational circles.
+          Specialized in executing community development schemes and engineering custom websites, mobile apps, desktop systems, and digital marketing strategies for individuals, organizations, and government agencies.
         </motion.p>
 
         {/* Action Triggers */}
@@ -109,7 +109,7 @@ export default function Hero({ onDonateNowClick, onBrowseMembershipClick }: Hero
           <div className="flex items-center justify-center space-x-2">
             <MapPin className="w-4 h-4 text-[#C5A059] shrink-0" />
             <span className="text-[10px] tracking-[0.2em] font-mono uppercase text-gray-300">
-              Surrey Manor Estates
+              Dwazak, Freetown, SL
             </span>
           </div>
           <div className="flex items-center justify-center space-x-2">

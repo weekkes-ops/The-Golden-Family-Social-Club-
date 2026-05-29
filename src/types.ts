@@ -50,3 +50,17 @@ export interface ContactInquiry {
   message: string;
   timestamp: string;
 }
+
+export interface MemberAccount {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  selectedTierId: string; // matches MEMBERSHIP_TIERS IDs
+  cardNumber: string;
+  decreedDate: string;
+  avatarUrl?: string;
+  rsvps: string[]; // array of eventIds
+  createdAt: string;
+}
+

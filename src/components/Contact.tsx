@@ -91,7 +91,7 @@ export default function Contact() {
                       PHYSICAL SEAT
                     </span>
                     <span className="block text-xs font-sans text-gray-300 mt-1">
-                      77 Golden Oak Dr, Richmond Surrey, TW10 6NW
+                      152 Upper Dwazak Freetown, Sierra Leone
                     </span>
                   </div>
                 </div>
@@ -105,7 +105,7 @@ export default function Contact() {
                       SOCIETY LIAISON
                     </span>
                     <span className="block text-xs font-sans text-gray-300 mt-1 select-all hover:text-gold-300 transition-colors">
-                      stewards@goldenfamilyclub.co.uk
+                      stewards@goldenfamilyclub.sl
                     </span>
                   </div>
                 </div>
@@ -119,7 +119,7 @@ export default function Contact() {
                       CONCIERGE DIRECT
                     </span>
                     <span className="block text-xs font-sans text-gray-300 mt-1 select-all hover:text-gold-300 transition-colors">
-                      +44 20 7946 0192
+                      +232 76 543 210
                     </span>
                   </div>
                 </div>
@@ -133,7 +133,7 @@ export default function Contact() {
                       OFFICE HOURS
                     </span>
                     <span className="block text-xs font-sans text-gray-300 mt-1">
-                      Daily: 09:00 AM - 06:00 PM GMT
+                      Daily: 08:00 AM - 05:00 PM GMT
                     </span>
                   </div>
                 </div>
@@ -159,10 +159,10 @@ export default function Contact() {
                 <div className="relative z-10 p-4">
                   <MapPin className="w-5 h-5 text-red-500 fill-red-500 animate-bounce mx-auto" />
                   <span className="block text-[10px] font-mono uppercase tracking-widest mt-1.5 text-gold-400 font-semibold leading-none">
-                    Lakeside Pavillion
+                    Dwazak Main Campus
                   </span>
                   <span className="block text-[8px] text-gray-500 mt-0.5">
-                    Surrey Gates Parking Available
+                    Upper Dwazak Freetown Office
                   </span>
                 </div>
               </div>
@@ -235,7 +235,7 @@ export default function Contact() {
                   type="text"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  placeholder="e.g. Historic Manor Tour / Foundation Grant / Gala Seating Enquiry"
+                  placeholder="e.g. Web/App Development / Community Development / Digital Marketing Audit"
                   className="w-full px-3.5 py-2 text-sm bg-brand-dark/60 border border-gold-800/20 rounded text-white focus:outline-none focus:border-gold-400 placeholder-gray-700"
                 />
               </div>

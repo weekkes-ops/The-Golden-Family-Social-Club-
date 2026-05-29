@@ -13,23 +13,23 @@ export const CLUB_IMAGES = {
 
 export const CORE_VALUES = [
   {
-    title: "Intergenerational Legacy",
-    description: "Bridging the wisdom of elder generations with the vibrant energy of youth to create lasting community networks.",
+    title: "Community Development",
+    description: "Executing community development projects tailored for individuals, organizations, institutions, and government agencies.",
     icon: "Users"
   },
   {
-    title: "Intellectual Discourses",
-    description: "Fostering standard-setting debates, panels, and guest salons covering arts, philosophy, sciences, and local policy.",
-    icon: "BookOpen"
+    title: "Software Development",
+    description: "Developing robust websites, responsive mobile apps, and native desktop applications designed to solve real-world problems.",
+    icon: "Laptop"
   },
   {
-    title: "Philanthropy & Aid",
-    description: "Fostering active benevolence, establishing community relief funds, and backing academic scholarship paths.",
-    icon: "Heart"
+    title: "Digital Marketing",
+    description: "Crafting customized online outreach, social marketing strategies, and search engine optimizations for local and international brands.",
+    icon: "Megaphone"
   },
   {
-    title: "Leisure & Celebration",
-    description: "Cultivating beautiful social milestones, sporting traditions, and curated seasonal galas in exclusive clubhouses.",
+    title: "Institutional Synergy",
+    description: "Connecting private innovation with government-backed agencies to deploy digital solutions and scale grassroots impact.",
     icon: "Sparkles"
   }
 ];
@@ -37,30 +37,30 @@ export const CORE_VALUES = [
 export const INITIAL_PROGRAMS = [
   {
     id: "p1",
-    title: "Bridges of Wisdom Mentorship",
-    category: "Community Outreach",
-    tagline: "Uniting lifetimes of knowledge",
-    description: "Our hallmark program pairings secondary school and college students with accomplished senior mentors. They exchange vocational training, life advisory support, and digital literacy development.",
-    image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=800&auto=format&fit=crop",
-    impact: "Over 450 pairs graduated to date"
+    title: "Community Development Schemes",
+    category: "Civic Outreach",
+    tagline: "Empowering Freetown neighborhoods",
+    description: "Delivering community development projects structured directly to serve individual residents, nonprofit organizations, schools, and government agencies who seek positive societal growth.",
+    image: "https://images.unsplash.com/photo-1469571486010-0b3b272d5501?q=80&w=800&auto=format&fit=crop",
+    impact: "18+ active projects across Sierra Leone"
   },
   {
     id: "p2",
-    title: "The Golden Philanthropy Circle",
-    category: "Charitable Action",
-    tagline: "Investing back in our soil",
-    description: "A collaborative effort that pools member donations to execute local green-urban projects, support underfunded public elementary education, and provide immediate shelter grants.",
-    image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=800&auto=format&fit=crop",
-    impact: "$240,000+ distributed across our county"
+    title: "Software & App Engineering",
+    category: "Technology",
+    tagline: "Bespoke digital architecture",
+    description: "Developing exquisite websites, Android & iOS mobile applications, and secure desktop programs that modern organizations and institutions rely upon to systematize their operations.",
+    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop",
+    impact: "40+ corporate & agency systems built"
   },
   {
     id: "p3",
-    title: "Fireside Salons & Lectures",
-    category: "Culture & Intellect",
-    tagline: "Sparking elite conversations",
-    description: "Monthly curated panels that host leading scientists, philosophers, authors, and artists. Facilitating high-quality intimate dialogue inside our historic library wing.",
-    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=800&auto=format&fit=crop",
-    impact: "24 guest lecturers hosted annually"
+    title: "Digital Marketing Campaigns",
+    category: "Strategy",
+    tagline: "Amplifying digital footprints",
+    description: "Deploying high-impact digital marketing campaigns, Google footprint scaling, and localized content strategies dedicated to making services reachable in modern emerging sectors.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
+    impact: "10x engagement boost for local enterprises"
   }
 ];
 

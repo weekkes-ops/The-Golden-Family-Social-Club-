@@ -3,10 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Calendar, Clock, MapPin, Check, Plus, AlertCircle, Sparkles, UserCheck } from "lucide-react";
 import { ClubEvent } from "../types";
+import { useAuth } from "../context/AuthContext";
 
 interface EventsProps {
   events: ClubEvent[];
@@ -15,16 +16,27 @@ interface EventsProps {
 }
 
 export default function Events({ events, onRSVP, userRSVPs }: EventsProps) {
+  const { currentUser } = useAuth();
   const [activeModalId, setActiveModalId] = useState<string | null>(null);
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
   const [formError, setFormError] = useState("");
   const [justBookedId, setJustBookedId] = useState<string | null>(null);
 
+  // Auto-prefill coordinates for registered members when opening booking form
+  useEffect(() => {
+    if (currentUser && activeModalId) {
+      setGuestName(currentUser.name);
+      setGuestEmail(currentUser.email);
+    }
+  }, [currentUser, activeModalId]);
+
   const handleOpenRSVP = (eventId: string) => {
     setActiveModalId(eventId);
-    setGuestName("");
-    setGuestEmail("");
+    if (!currentUser) {
+      setGuestName("");
+      setGuestEmail("");
+    }
     setFormError("");
   };
 

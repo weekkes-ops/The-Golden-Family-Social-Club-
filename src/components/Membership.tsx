@@ -5,28 +5,36 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CreditCard, ShieldCheck, Mail, Phone, ArrowUpRight, Sparkles, User, Gift, Check, Award, Loader2 } from "lucide-react";
+import { CreditCard, ShieldCheck, Mail, Phone, ArrowUpRight, Sparkles, User, Gift, Check, Award, Loader2, Lock } from "lucide-react";
 import { MEMBERSHIP_TIERS, CLUB_IMAGES } from "../data";
+import { useAuth } from "../context/AuthContext";
 
-export default function Membership() {
+interface MembershipProps {
+  onAuthTrigger?: (view: "login" | "signup") => void;
+}
+
+export default function Membership({ onAuthTrigger }: MembershipProps) {
+  const { currentUser, signUp, logOut } = useAuth();
+  
+  // Local state for registration form
   const [selectedTierIndex, setSelectedTierIndex] = useState(1); // Standard Individual Fellow ($600)
   const [memberName, setMemberName] = useState("");
   const [memberPhone, setMemberPhone] = useState("");
   const [memberEmail, setMemberEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [cardNumber, setCardNumber] = useState("GF-2026-8809X");
-  const [isJoined, setIsJoined] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
 
-  // Re-generate card details when member updates name
+  // Re-generate card details when member updates name (local state fallback)
   useEffect(() => {
-    if (isJoined) return;
+    if (currentUser) return;
     const nameSeed = memberName.length ? memberName.toUpperCase().replace(/[^A-Z]/g, "") : "CLASSIC_FELLOW";
     const sum = nameSeed.split("").reduce((acc, char) => acc + char.charCodeAt(0), 1988);
     setCardNumber(`GF-2026-${sum}`);
-  }, [memberName, isJoined]);
+  }, [memberName, currentUser]);
 
-  const handleRegisterOnboard = (e: React.FormEvent) => {
+  const handleRegisterOnboard = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError("");
 
@@ -38,52 +46,49 @@ export default function Membership() {
       setFormError("An authorized email is needed.");
       return;
     }
+    if (!password) {
+      setFormError("A secure passcode is required to lock your credentials.");
+      return;
+    }
+    if (password.length < 5) {
+      setFormError("Passcode must be at least 5 character digits for registry safety.");
+      return;
+    }
 
     setIsSubmitting(true);
-    // Simulate luxury security processing
-    setTimeout(() => {
+    try {
+      await signUp(
+        memberName.trim(),
+        memberEmail.trim(),
+        memberPhone.trim(),
+        password,
+        MEMBERSHIP_TIERS[selectedTierIndex].id
+      );
+    } catch (err: any) {
+      setFormError(err?.message || "An unexpected error occurred during onboarding.");
+    } finally {
       setIsSubmitting(false);
-      setIsJoined(true);
-      
-      // Save credentials in local storage for fun persistence
-      const savedCard = {
-        name: memberName.trim(),
-        email: memberEmail.trim(),
-        tier: MEMBERSHIP_TIERS[selectedTierIndex].name,
-        cardNumber: cardNumber,
-        status: "ACTIVE_DECREED"
-      };
-      localStorage.setItem("gf_social_club_membership", JSON.stringify(savedCard));
-    }, 2000);
+    }
   };
 
   const handleRevokeCredentials = () => {
-    setIsJoined(false);
+    logOut();
     setMemberName("");
     setMemberPhone("");
     setMemberEmail("");
-    localStorage.removeItem("gf_social_club_membership");
+    setPassword("");
   };
 
-  // Check if they already onboarded in the past
-  useEffect(() => {
-    const historicalOnboarding = localStorage.getItem("gf_social_club_membership");
-    if (historicalOnboarding) {
-      try {
-        const parsed = JSON.parse(historicalOnboarding);
-        setMemberName(parsed.name);
-        setMemberEmail(parsed.email);
-        setCardNumber(parsed.cardNumber);
-        const tierIdx = MEMBERSHIP_TIERS.findIndex((t) => t.name === parsed.tier);
-        if (tierIdx !== -1) {
-          setSelectedTierIndex(tierIdx);
-        }
-        setIsJoined(true);
-      } catch (err) {}
-    }
-  }, []);
-
-  const activeTier = MEMBERSHIP_TIERS[selectedTierIndex];
+  // State derived from auth context
+  const isJoined = !!currentUser;
+  const activeMemberName = currentUser ? currentUser.name : memberName;
+  const activeCardNumber = currentUser ? currentUser.cardNumber : cardNumber;
+  const activeTierIndex = currentUser 
+    ? MEMBERSHIP_TIERS.findIndex((t) => t.id === currentUser.selectedTierId)
+    : selectedTierIndex;
+  
+  const finalTierIndex = activeTierIndex !== -1 ? activeTierIndex : 1;
+  const activeTier = MEMBERSHIP_TIERS[finalTierIndex];
 
   return (
     <section
@@ -104,7 +109,7 @@ export default function Membership() {
           </h2>
           <div className="w-16 h-px bg-[#C5A059] mx-auto"></div>
           <p className="text-gray-400 font-sans font-light text-sm max-w-lg mx-auto">
-            Align yourself with Surrey's premier social circle. Choose your tier, fill in your credentials, and watch your personalized Golden Family Social Club Card render instantly.
+            Align yourself with our premier community circle in Freetown. Choose your tier, fill in your credentials, and watch your personalized Golden Family Social Club Card render instantly.
           </p>
         </div>
 
@@ -205,18 +210,34 @@ export default function Membership() {
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="block text-[9px] font-mono uppercase tracking-[0.15em] text-gray-400 font-semibold">
-                    Primary Email Coordinate (Secure notifications)
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={memberEmail}
-                    onChange={(e) => setMemberEmail(e.target.value)}
-                    placeholder="e.g. s.vance@monarchestate.com"
-                    className="w-full px-3.5 py-3 text-sm bg-black border border-white/10 rounded-none text-white focus:outline-none focus:border-[#C5A059] placeholder-gray-700"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="block text-[9px] font-mono uppercase tracking-[0.15em] text-gray-400 font-semibold">
+                      Primary Email Coordinate (Secure notifications)
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={memberEmail}
+                      onChange={(e) => setMemberEmail(e.target.value)}
+                      placeholder="e.g. s.vance@monarchestate.com"
+                      className="w-full px-3.5 py-3 text-sm bg-black border border-white/10 rounded-none text-white focus:outline-none focus:border-[#C5A059] placeholder-gray-700"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="block text-[9px] font-mono uppercase tracking-[0.15em] text-gray-400 font-semibold">
+                      Society Account Passcode (To log in later)
+                    </label>
+                    <input
+                      type="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Password"
+                      className="w-full px-3.5 py-3 text-sm bg-black border border-white/10 rounded-none text-white focus:outline-none focus:border-[#C5A059] placeholder-gray-700"
+                    />
+                  </div>
                 </div>
 
                 <button
@@ -237,6 +258,17 @@ export default function Membership() {
                     </>
                   )}
                 </button>
+
+                <p className="text-[10px] text-gray-500 font-mono uppercase text-center mt-2.5">
+                  Already registered in our archives?{" "}
+                  <button
+                    type="button"
+                    onClick={() => onAuthTrigger?.("login")}
+                    className="text-[#C5A059] hover:underline font-bold font-semibold cursor-pointer"
+                  >
+                    Authenticate Portal Access
+                  </button>
+                </p>
               </form>
             ) : (
               <div className="p-6 rounded-none bg-emerald-950/10 border border-emerald-800/35 flex flex-col items-center justify-center text-center space-y-5">
@@ -252,7 +284,7 @@ export default function Membership() {
                     Credentials Successfully Minted!
                   </h4>
                   <p className="max-w-md mx-auto text-xs text-gray-400 font-sans font-light leading-relaxed">
-                    Welcome to the Golden Circle, <strong className="text-white uppercase">{memberName}</strong>. Your digitized identity has been signed, secured in local storage, and published across our concierge directories.
+                    Welcome to the Golden Circle, <strong className="text-white uppercase">{activeMemberName}</strong>. Your digitized identity has been signed, secured in local storage, and published across our concierge directories.
                   </p>
                 </div>
 
@@ -323,7 +355,7 @@ export default function Membership() {
                 {/* Card Main info */}
                 <div className="relative z-10 space-y-3 mt-6">
                   <span className="text-[14px] text-[#E5E5E5] font-black tracking-widest block truncate uppercase">
-                    {memberName.trim() ? memberName.toUpperCase() : "MEMBER NAME HERE"}
+                    {activeMemberName.trim() ? activeMemberName.toUpperCase() : "MEMBER NAME HERE"}
                   </span>
 
                   <div className="flex items-center justify-between gap-4">
@@ -341,7 +373,7 @@ export default function Membership() {
                         DECREED ON
                       </span>
                       <span className="block text-[9.5px] font-mono uppercase tracking-widest text-gray-350 mt-1">
-                        Est. Surrey, 2026/05
+                        {currentUser ? currentUser.decreedDate : "Est. Freetown, 2026/05"}
                       </span>
                     </div>
                   </div>
@@ -350,12 +382,12 @@ export default function Membership() {
                 {/* Card Footer */}
                 <div className="flex items-center justify-between relative z-10 border-t border-white/10 pt-2.5">
                   <span className="text-[9px] font-mono text-gray-400 select-all tracking-widest font-semibold">
-                    {cardNumber}
+                    {activeCardNumber}
                   </span>
 
                   <div className="flex items-center space-x-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                    <span className="text-[7px] font-mono tracking-widest text-emerald-500 uppercase">
+                    <span className="text-[7px] font-mono tracking-widest text-emerald-500 uppercase font-semibold">
                       SECURED & TRUSTED
                     </span>
                   </div>

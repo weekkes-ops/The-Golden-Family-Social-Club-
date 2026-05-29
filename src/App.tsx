@@ -14,6 +14,7 @@ import Events from "./components/Events";
 import Membership from "./components/Membership";
 import DonationGateway from "./components/DonationGateway";
 import Contact from "./components/Contact";
+import AuthModal from "./components/AuthModal";
 import { ShieldCheck, Heart, Sparkles, MessageSquare } from "lucide-react";
 
 export default function App() {
@@ -21,6 +22,8 @@ export default function App() {
   const [donors, setDonors] = useState<Donor[]>([]);
   const [events, setEvents] = useState<ClubEvent[]>([]);
   const [userRSVPs, setUserRSVPs] = useState<string[]>([]);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalView, setAuthModalView] = useState<"login" | "signup">("login");
 
   // Initialize data from mock data or local storage
   useEffect(() => {
@@ -127,6 +130,11 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScrollSpy);
   }, []);
 
+  const handleAuthTrigger = (view: "login" | "signup") => {
+    setAuthModalView(view);
+    setIsAuthModalOpen(true);
+  };
+
   return (
     <div id="app-root-canvas" className="min-h-screen bg-brand-dark overflow-x-hidden antialiased font-sans">
       
@@ -135,6 +143,7 @@ export default function App() {
         activeSection={activeSection}
         onNavigate={handleNavigate}
         totalDonationsAmount={totalDonationsAmount}
+        onAuthTrigger={handleAuthTrigger}
       />
 
       {/* Hero splash introduction */}
@@ -157,7 +166,14 @@ export default function App() {
       />
 
       {/* Interactive live Gold Social ID Card Generator */}
-      <Membership />
+      <Membership onAuthTrigger={handleAuthTrigger} />
+
+      {/* Dynamic Authorization Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        defaultView={authModalView}
+      />
 
       {/* Encrypted Sandbox + Actual Paypal Smart Buttons */}
       <DonationGateway
@@ -244,7 +260,7 @@ export default function App() {
             
             <div className="flex items-center gap-1 text-[10px] text-gray-500">
               <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 shrink-0" />
-              <span>Created for Surrey community relief campaigns. All mock card checks are completely client-safe.</span>
+              <span>Created for Freetown community development and software campaigns. All mock card checks are completely client-safe.</span>
             </div>
           </div>
 
@@ -253,10 +269,10 @@ export default function App() {
         {/* Copy bar */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-brand-slate/30 flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-500">
           <span>
-            © 1988 - 2026 The Golden Family Social Club and Foundations Limited. Registered Charity No. 802931.
+            © 1988 - 2026 The Golden Family Social Club and Foundations Limited. Registered in Sierra Leone.
           </span>
           <div className="flex items-center gap-4 mt-4 sm:mt-0">
-            <span>Surrey Manor, UK</span>
+            <span>Freetown, Sierra Leone</span>
             <span>PayPal Encrypted</span>
             <span>Est. 1988</span>
           </div>

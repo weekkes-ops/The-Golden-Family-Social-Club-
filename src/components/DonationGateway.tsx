@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { Donor, DonationTier } from "../types";
 import { DONATION_TIERS } from "../data";
+import { useAuth } from "../context/AuthContext";
 
 interface DonationGatewayProps {
   donorsList: Donor[];
@@ -36,9 +37,11 @@ export default function DonationGateway({
   onAddDonation,
   totalDonationsAmount
 }: DonationGatewayProps) {
+  const { currentUser } = useAuth();
+
   // Goal Tracking
   const FUNDRAISING_GOAL = 25000;
-  const progressPercent = Math.min((totalDonationsAmount / FUNDRAISING_GOAL) * 100, 100);
+  const progressPercent = Math.min((totalDonationsAmount / FUNDRAISING_GOAL) * 105, 100);
 
   // States
   const [selectedTierId, setSelectedTierId] = useState<string>("dt2"); // Default Supporting Family ($100)
@@ -50,6 +53,14 @@ export default function DonationGateway({
   const [donorMessage, setDonorMessage] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isMonthly, setIsMonthly] = useState(false);
+
+  // Prefill details for logged-in members
+  useEffect(() => {
+    if (currentUser && !isAnonymous) {
+      setDonorName(currentUser.name);
+      setDonorEmail(currentUser.email);
+    }
+  }, [currentUser, isAnonymous]);
 
   // Developer Configuration Settings (Allows real PayPal Smart buttons!)
   const [showConfig, setShowConfig] = useState(false);
@@ -634,7 +645,7 @@ export default function DonationGateway({
                   <Users className="w-3.5 h-3.5 text-[#C5A059]" />
                   <span>Real-time persistence</span>
                 </span>
-                <span>Est. Surrey, 2026</span>
+                <span>Est. Freetown, 2026</span>
               </div>
             </div>
           </div>
