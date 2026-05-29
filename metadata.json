@@ -1,0 +1,6 @@
+{
+  "name": "The Golden Family Social Club",
+  "description": "An elegant, stunning website for The Golden Family Social Club, featuring an integrated PayPal donation gateway, club history, elegant events showcase, community programs, and direct member onboarding.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
